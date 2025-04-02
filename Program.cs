@@ -46,6 +46,8 @@ class Program
     static void Main(string[] args)
     {
         var ecpFilePath = "data.bin.sig";
+        var tspFilePath = "stamp.tsp";
+
         byte[] ecp = File.ReadAllBytes(ecpFilePath);
         var ecpBase64 = Convert.ToBase64String(ecp, Base64FormattingOptions.InsertLineBreaks);
         Span<byte> nonce = stackalloc byte[16];
@@ -54,7 +56,7 @@ class Program
         Oid digestOid = new Oid("1.3.14.3.2.26"); // OID для SHA-1
 
         var tst = RetriveTimestamp(tbh.AsSpan(), digestOid, nonce, "http://tsp.pkitrans.ru/tspca1_niias/tsp.srf", TimeSpan.FromSeconds(15));
-        Console.WriteLine(tst);
+        // File.WriteAllText(tspFilePath, tst); // Сохранение штампа времени в файл
 
         Console.WriteLine("Обработка завершена!");
     }
